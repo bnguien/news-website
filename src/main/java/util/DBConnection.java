@@ -11,6 +11,7 @@ public class DBConnection {
 
     static {
         try {
+
             // Nạp class của driver MySQL
             // (Sử dụng 'cj' cho các phiên bản driver mới)
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -18,6 +19,7 @@ public class DBConnection {
             // Lỗi này xảy ra nếu bạn CHƯA THÊM file .jar của MySQL Connector
             // vào thư mục WEB-INF/lib
             System.err.println("Không tìm thấy MySQL JDBC Driver!");
+
             e.printStackTrace();
         }
     }

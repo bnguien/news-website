@@ -16,28 +16,42 @@ public class UserBO {
 		return userOpt.isPresent();
 	}
 	
-	public boolean register(User user) {
+	public boolean isUsernameExist(String username) {
+		Optional<User> userOpt = userDAO.findByUsername(username);
+		return userOpt.isPresent();
+	}
+	
+	public String register(User user) {
 		String role = user.getRole();
-		if (!role.equalsIgnoreCase("reader") || !role.equalsIgnoreCase("reporter")) {
-			return false;
+		if (!(role.equalsIgnoreCase("reader") || role.equalsIgnoreCase("reporter"))) {
+			return "INVALID_ROLE";
 		}
 		
 		String username = user.getUsername();
 		String password = user.getPassword();
 		String email = user.getEmail();
-		if (!Validators.isValidUsername(username) || 
-				!Validators.isValidEmail(email) ||
-				!Validators.isValidPassword(password)) {
-			return false;
+		if (!Validators.isValidUsername(username)){
+			return "INVALID_USERNAME";
+		}
+			
+		if (!Validators.isValidEmail(email)) {
+			return "INVALID_EMAIL";
 		}
 		
-		if (isEmailExist(email)) {
-			return false;
+		if (!Validators.isValidPassword(password)) {
+			return "INVALID_PASSWORD";
+		}
+		
+		if (isEmailExist(email) || isUsernameExist(username)) {
+			return "ACCOUNT_EXIST";
 		}
 		
 		String hashedPassword = SecurityUtils.hashPassword(user.getPassword());
 		user.setPassword(hashedPassword);
-		return userDAO.registerUser(user);
+		if(userDAO.registerUser(user)) {
+			return null;
+		}
+		return "NOT_FOUND_ERROR";
 	}
 	
 	public Optional<User> loginByUsername(String username, String password) {

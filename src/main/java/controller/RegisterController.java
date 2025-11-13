@@ -34,10 +34,9 @@ public class RegisterController extends HttpServlet {
 		String role = request.getParameter("role");
 		
 		String errorCode = null;
-		if (confirmPassword == null || confirmPassword.equals(password)) {
+		if (confirmPassword == null || !confirmPassword.equals(password)) {
 			errorCode = "PASSWORD_MISMATCH";
 			System.out.println(DEBUG_PREFIX + errorCode + ": Passwords do not match.");
-	        return;
 		} else if (username == null || username.trim().isEmpty()
 			|| email == null || email.trim().isEmpty()
 			|| password == null || password.trim().isEmpty()
@@ -62,13 +61,12 @@ public class RegisterController extends HttpServlet {
 			user.setPassword(password);
 			user.setRole(role);
 			
-			boolean registerSuccess = userBO.register(user);
-			if (registerSuccess) {
+			errorCode = userBO.register(user);
+			if (errorCode == null) {
 				System.out.println(DEBUG_PREFIX + "SUCCESS: User registered: " + username);
 				response.sendRedirect("login.jsp?msg=register_success");
 			} else {
-				errorCode = "REGISTER_EXISTS";
-				System.out.println(DEBUG_PREFIX + errorCode + ": Username or email already in use.");
+				System.out.println(DEBUG_PREFIX + errorCode);
 				
 				request.setAttribute("errorCode", errorCode);
 				request.setAttribute("username", username);
