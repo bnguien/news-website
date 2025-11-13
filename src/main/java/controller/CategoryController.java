@@ -4,6 +4,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import java.io.IOException;
+import java.util.List;
 
 import model.bean.Category;
 import model.bo.CategoryBO;
@@ -37,7 +38,7 @@ public class CategoryController extends HttpServlet {
                 break;
 
             default:
-                response.sendRedirect("admin-category.jsp");
+                listCategory(request, response);;
         }
     }
 
@@ -57,7 +58,13 @@ public class CategoryController extends HttpServlet {
                 break;
         }
     }
-
+    private void listCategory(HttpServletRequest request, HttpServletResponse response)
+            throws IOException, ServletException {
+    	List<Category> categoryList = categoryBO.getAllCategories();
+        request.setAttribute("categoryList", categoryList);
+        request.getRequestDispatcher("/admin-category.jsp").forward(request, response);
+        
+    }
     private void addCategory(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
 

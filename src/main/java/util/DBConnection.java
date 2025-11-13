@@ -9,6 +9,18 @@ public class DBConnection {
     private static final String USER = "root";
     private static final String PASSWORD = "";
 
+    static {
+        try {
+            // Nạp class của driver MySQL
+            // (Sử dụng 'cj' cho các phiên bản driver mới)
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            // Lỗi này xảy ra nếu bạn CHƯA THÊM file .jar của MySQL Connector
+            // vào thư mục WEB-INF/lib
+            System.err.println("Không tìm thấy MySQL JDBC Driver!");
+            e.printStackTrace();
+        }
+    }
     
 
     public static Connection getConnection() throws SQLException {
