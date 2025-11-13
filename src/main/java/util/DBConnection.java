@@ -12,7 +12,9 @@ public class DBConnection {
     static {
         try {
             Class.forName("com.mysql.jdbc.Driver"); 
+            System.out.println("MySQL Driver is successfully installed");
         } catch (ClassNotFoundException e) {
+        	System.out.println("MySQL Driver error.");
             e.printStackTrace();
         }
     }
