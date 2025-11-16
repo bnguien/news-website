@@ -13,13 +13,12 @@ import util.DBConnection;
 
 public class CommentDAO {
 	public int insertComment(int articleId, int userId, String content, java.util.Date createdAt) {
-		String sql = "INSERT INTO comments (article_id, user_id, content, created_at) VALUES (?, ?, ?, ?)";
+		String sql = "INSERT INTO comments (article_id, user_id, content) VALUES (?, ?, ?)";
 		try(Connection conn = DBConnection.getConnection();
 			PreparedStatement ps = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
 			ps.setInt(1, articleId);
 			ps.setInt(2, userId);
 			ps.setString(3, content);
-			ps.setTimestamp(4, new Timestamp(createdAt.getTime()));
 			ps.executeUpdate();
 			ResultSet rs = ps.getGeneratedKeys();
 			if(rs.next()) {
@@ -46,7 +45,7 @@ public class CommentDAO {
 	
 	public List<Comment> getCommentsByArticleId(int articleId) {
 		List<Comment> comments = new ArrayList<>();
-		String sql = "SELECT comment_id, article_id, user_id, content, created_at FROM comments WHERE article_id = ?";
+        String sql = "SELECT * FROM comments WHERE article_id = ? ORDER BY created_at DESC";
 		try(Connection conn = DBConnection.getConnection();
 			PreparedStatement ps = conn.prepareStatement(sql)) {
 			ps.setInt(1, articleId);
