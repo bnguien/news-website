@@ -1,7 +1,6 @@
 package model.bo;
 
 import java.util.List;
-
 import model.bean.Category;
 import model.dao.CategoryDAO;
 
@@ -17,35 +16,50 @@ public class CategoryBO {
         return categoryDAO.getCategoryById(id);
     }
 
-    public int addCategory(Category category) {
+    public String addCategory(Category category) {
         if (category.getName() == null || category.getName().trim().isEmpty()) {
-            return -1;
+            return "INVALID_NAME";
         }
+
         category.setName(category.getName().trim());
 
-        return categoryDAO.insertCategory(category.getName(), category.getDescription());
+        int result = categoryDAO.insertCategory(category.getName(), category.getDescription());
+        return result > 0 ? "added" : "SERVER_ERROR";
     }
 
-    public boolean editCategory(Category category) {
+    public String editCategory(Category category) {
+        Category existing = categoryDAO.getCategoryById(category.getCategoryId());
+        if (existing == null) {
+            return "NOT_FOUND";
+        }
 
         if (category.getName() == null || category.getName().trim().isEmpty()) {
-            return false;
+            return "INVALID_NAME";
         }
 
         category.setName(category.getName().trim());
 
-        return categoryDAO.updateCategory(
+        boolean success = categoryDAO.updateCategory(
                 category.getCategoryId(),
                 category.getName(),
-                category.getDescription());
+                category.getDescription()
+        );
+
+        return success ? "updated" : "SERVER_ERROR";
     }
 
-    public boolean removeCategory(int categoryId) {
-        int count = categoryDAO.countArticlesByCategory(categoryId);
-        if (count > 0) {
-            return false;
+    public String removeCategory(int categoryId) {
+        Category existing = categoryDAO.getCategoryById(categoryId);
+        if (existing == null) {
+            return "NOT_FOUND";
         }
 
-        return categoryDAO.deleteCategory(categoryId);
+        int count = categoryDAO.countArticlesByCategory(categoryId);
+        if (count > 0) {
+            return "IN_USE";
+        }
+
+        boolean success = categoryDAO.deleteCategory(categoryId);
+        return success ? "deleted" : "SERVER_ERROR";
     }
 }
