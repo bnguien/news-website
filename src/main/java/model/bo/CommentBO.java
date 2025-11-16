@@ -6,17 +6,20 @@ import model.bean.Comment;
 import model.dao.CommentDAO;
 
 public class CommentBO {
-	private CommentDAO commentDAO = new CommentDAO();
-	
-	public int addComment(Comment comment) {
-		return commentDAO.insertComment(comment.getArticleId(), comment.getUserId(), comment.getContent(), comment.getCreatedAt());
-	}
-	
-	public boolean removeComment(int commentId) {
-		return commentDAO.deleteComment(commentId);
-	}
-	
-	public List<Comment> fetchCommentsByArticleId(int articleId) {
-		return commentDAO.getCommentsByArticleId(articleId);
-	}
+
+    private CommentDAO commentDAO = new CommentDAO();
+
+    public String addComment(Comment c) {
+        int result = commentDAO.insertComment(c);
+        return (result > 0) ? "added" : "SERVER_ERROR";
+    }
+
+    public String deleteComment(int id) {
+        boolean ok = commentDAO.deleteComment(id);
+        return ok ? "deleted" : "SERVER_ERROR";
+    }
+
+    public List<Comment> fetchCommentsByArticleId(int articleId) {
+        return commentDAO.getCommentsByArticleId(articleId);
+    }
 }
