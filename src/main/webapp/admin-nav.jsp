@@ -65,31 +65,33 @@
     }
     
 </style>
+<jsp:include page="header.jsp" />
 
 <nav class="admin-navbar">
     <ul>
-        <%--
-          Sử dụng JSTL <c:if> hoặc biểu thức EL để kiểm tra 'param.activePage'.
-          Ví dụ: ${param.activePage == 'dashboard' ? 'active' : ''}
-          Điều này sẽ thêm class "active" nếu điều kiện đúng.
-        --%>
+        
         <li>
-            <%-- SỬA LỖI: Trỏ đến servlet, ví dụ "dashboard" thay vì "admin-dashboard.jsp" --%>
+           
             <a class="${param.activePage == 'dashboard' ? 'active' : ''}" 
-               href="admin-dashboard.jsp">Dashboard</a> <%-- Tạm thời giữ lại .jsp cho dashboard vì nó chưa có controller --%>
+               href="admin-dashboard.jsp">Dashboard</a> 
         </li>
         <li>
-            <%-- SỬA LỖI: Trỏ đến "user" (UserController) thay vì "admin-user.jsp" --%>
+           
             <a class="${param.activePage == 'users' ? 'active' : ''}" 
                href="user">Quản Lý Người Dùng</a>
         </li>
         <li>
-            <%-- SỬA LỖI: Trỏ đến "category" (CategoryController) thay vì "admin-category.jsp" --%>
+            
             <a class="${param.activePage == 'categories' ? 'active' : ''}" 
                href="category">Quản Lý Danh Mục</a>
         </li>
+        <li>
+            
+            <a class="${param.activePage == 'ả' ? 'active' : ''}" 
+               href="category">Quản Lý Bài viết</a>
+        </li>
         
-        <%-- Ví dụ về link Đăng xuất ở bên phải --%>
+       
         <!-- 
         <li class="nav-right">
             <a href="logout">Đăng Xuất</a>

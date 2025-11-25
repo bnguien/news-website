@@ -1,10 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%-- 
-  KHÔNG CẦN import CategoryBO hay List nữa, 
-  vì CategoryController đã lấy dữ liệu và forward sang đây.
-  Trang JSP này chỉ cần dùng JSTL để đọc "categoryList" từ request.
---%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -100,17 +95,10 @@
 </head>
 <body>
 
-    <%-- 
-      PHẦN 1: NHÚNG THANH ĐIỀU HƯỚNG
-      Báo cho 'admin-nav.jsp' biết trang 'categories' đang được active.
-    --%>
     <jsp:include page="admin-nav.jsp">
         <jsp:param name="activePage" value="categories" />
     </jsp:include>
 
-    <%-- 
-      PHẦN 2: NỘI DUNG CHÍNH CỦA TRANG
-    --%>
     <div class="admin-container">
         <h2>Quản Lý Danh Mục</h2>
 
@@ -140,11 +128,6 @@
             </div>
         </c:if>
 
-        <%-- 
-          PHẦN 4: FORM THÊM MỚI DANH MỤC
-          Form này sẽ POST đến 'category' (chính là CategoryController)
-          với action="add" như trong 'doPost()' của bạn.
-        --%>
         <div class="form-container">
             <h3>Thêm Danh Mục Mới</h3>
             <form action="category" method="POST">
@@ -163,11 +146,6 @@
             </form>
         </div>
 
-        <%-- 
-          PHẦN 5: HIỂN THỊ DANH SÁCH DANH MỤC
-          Dùng JSTL <c:forEach> để lặp qua "categoryList"
-          mà CategoryController đã chuẩn bị sẵn.
-        --%>
         <h3>Danh Sách Danh Mục Hiện Có</h3>
         <table>
             <thead>
@@ -185,10 +163,7 @@
                         <td><c:out value="${category.name}" /></td>
                         <td><c:out value="${category.description}" /></td>
                         <td>
-                            <%-- 
-                              Các link này trỏ đến CategoryController với action và id tương ứng,
-                              khớp với logic trong 'doGet()' của bạn.
-                            --%>
+                            
                             <a href="category?action=edit&id=${category.categoryId}">Sửa</a>
                             |
                             <a href="category?action=delete&id=${category.categoryId}"
@@ -197,8 +172,7 @@
                         </td>
                     </tr>
                 </c:forEach>
-                
-                <%-- Hiển thị nếu không có danh mục nào --%>
+              
                 <c:if test="${empty categoryList}">
                     <tr>
                         <td colspan="4" style="text-align: center;">Chưa có danh mục nào.</td>
@@ -207,7 +181,7 @@
             </tbody>
         </table>
 
-    </div> <%-- Hết .admin-container --%>
+    </div> 
 
 </body>
 </html>
