@@ -8,8 +8,8 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+import config.DBConnection;
 import model.bean.Comment;
-import util.DBConnection;
 
 public class CommentDAO {
 	public int insertComment(int articleId, int userId, String content, java.util.Date createdAt) {
