@@ -4,7 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import util.DBConnection;
+
+import config.DBConnection;
 
 public class CategoryDAO {
 	public int insertCategory(String name, String description) {
