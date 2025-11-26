@@ -5,17 +5,14 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
-import model.bo.ArticleBO;
-import model.bo.CategoryBO;
-import model.bo.CommentBO;
-import model.bo.UserBO;
+import model.dao.ArticleDAO;
+import model.dao.CategoryDAO;
 import model.dao.CommentDAO;
 import model.dao.UserDAO;
-import model.dao.CategoryDAO;
-import model.dao.ArticleDAO;
 
 @WebServlet("/admin-dashboard")
 public class AdminDashboardController extends HttpServlet {
@@ -39,11 +36,28 @@ public class AdminDashboardController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        HttpSession session = request.getSession(false);
+
+        // Chưa đăng nhập → bắt đăng nhập
+        if (session == null || session.getAttribute("role") == null) {
+            response.sendRedirect("login.jsp");
+            return;
+        }
+
+        // Không phải admin → chặn truy cập
+        String role = (String) session.getAttribute("role");
+        if (!"admin".equalsIgnoreCase(role)) {
+            response.sendRedirect("welcome.jsp?error=forbidden");
+            return;
+        }
+
+        // Lấy số liệu thống kê
         int totalArticles = articleDAO.countPublishedArticles();
         int totalCategories = categoryDAO.countAllCategories();
         int totalComments = commentDAO.countAllComments();
         int totalUsers = userDAO.countAllUsers();
 
+        // Đổ dữ liệu sang JSP
         request.setAttribute("totalArticles", totalArticles);
         request.setAttribute("totalCategories", totalCategories);
         request.setAttribute("totalComments", totalComments);
@@ -52,5 +66,3 @@ public class AdminDashboardController extends HttpServlet {
         request.getRequestDispatcher("admin-dashboard.jsp").forward(request, response);
     }
 }
-
-

@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <%-- 
   File này chỉ chứa thanh điều hướng (navbar).
   Nó sẽ được nhúng vào các trang khác.
@@ -85,10 +85,10 @@
                href="category">Quản Lý Danh Mục</a>
         </li>
         <li>
-            
-            <a class="${param.activePage == 'ả' ? 'active' : ''}" 
-               href="category">Quản Lý Bài viết</a>
-        </li>
+    	<a class="${param.activePage == 'articles' ? 'active' : ''}" 
+       href="admin-articles">Quản Lý Bài Viết</a>
+	</li>
+        
         
        
         <!-- 
