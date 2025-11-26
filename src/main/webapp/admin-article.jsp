@@ -85,31 +85,31 @@
 
             <td class="text-center">
 
-                <a href="articles?action=viewDetail&id=<%= a.getArticleId() %>"
+                <a href="admin-articles?action=viewArticle&id=<%= a.getArticleId() %>"
                    class="btn btn-sm btn-info text-white mb-1">
                     <i class="fas fa-eye"></i>
                 </a>
 
-                <a href="admin?action=editArticle&id=<%= a.getArticleId() %>"
+                <a href="admin-articles?action=editArticle&id=<%= a.getArticleId() %>"
                    class="btn btn-sm btn-warning mb-1">
                     <i class="fas fa-edit"></i>
                 </a>
 
                 <%
-                    if ("pending".equals(a.getStatus())) {
+                    if ("pending".equals(a.getStatus()) || "draft".equals(a.getStatus())) {
                 %>
-                <a href="admin?action=approveArticle&id=<%= a.getArticleId() %>"
+                <a href="admin-articles?action=approveArticle&id=<%= a.getArticleId() %>"
                    class="btn btn-sm btn-success mb-1">
                     <i class="fas fa-check"></i>
                 </a>
 
-                <a href="admin?action=rejectArticle&id=<%= a.getArticleId() %>"
+                <a href="admin-articles?action=rejectArticle&id=<%= a.getArticleId() %>"
                    class="btn btn-sm btn-danger mb-1">
                     <i class="fas fa-times"></i>
                 </a>
                 <% } %>
 
-                <a href="admin?action=deleteArticle&id=<%= a.getArticleId() %>"
+                <a href="admin-articles?action=deleteArticle&id=<%= a.getArticleId() %>"
                    class="btn btn-sm btn-outline-danger mb-1"
                    onclick="return confirm('Xóa bài viết này?');">
                     <i class="fas fa-trash"></i>

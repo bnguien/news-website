@@ -43,6 +43,10 @@ public class AdminArticleController extends HttpServlet {
 
         switch (action) {
 
+            case "viewArticle":
+                viewArticle(request, response);
+                break;
+
             case "approveArticle":
                 approveArticle(request, response);
                 break;
@@ -70,6 +74,28 @@ public class AdminArticleController extends HttpServlet {
         List<Article> list = articleBO.getAllArticlesAdmin();
         request.setAttribute("adminArticles", list);
         request.getRequestDispatcher("admin-article.jsp").forward(request, response);
+    }
+
+    private void viewArticle(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        String idParam = request.getParameter("id");
+        int id;
+        try {
+            id = Integer.parseInt(idParam);
+        } catch (NumberFormatException e) {
+            response.sendRedirect("admin-articles?msg=invalidId");
+            return;
+        }
+
+        Article article = articleBO.getArticleById(id);
+        if (article == null) {
+            response.sendRedirect("admin-articles?msg=notfound");
+            return;
+        }
+
+        request.setAttribute("article", article);
+        request.getRequestDispatcher("article-detail.jsp").forward(request, response);
     }
 
     private void approveArticle(HttpServletRequest request, HttpServletResponse response)
