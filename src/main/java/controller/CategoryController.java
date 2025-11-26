@@ -71,8 +71,12 @@ public class CategoryController extends HttpServlet {
         if ("added".equals(result)) {
             response.sendRedirect("admin-category.jsp?msg=added");
         } else {
-            request.setAttribute("errorCode", result);
-            request.getRequestDispatcher("admin-category.jsp").forward(request, response);
+            // Trả về qua query param để JSP đọc bằng param.error
+            String errorParam = "unknown";
+            if ("INVALID_NAME".equals(result)) {
+                errorParam = "invalid_name";
+            }
+            response.sendRedirect("admin-category.jsp?error=" + errorParam);
         }
     }
 
@@ -80,7 +84,8 @@ public class CategoryController extends HttpServlet {
             throws ServletException, IOException {
 
         Category category = new Category();
-        category.setCategoryId(Integer.parseInt(request.getParameter("category_id")));
+        // JSP dùng tham số 'id' cho form sửa
+        category.setCategoryId(Integer.parseInt(request.getParameter("id")));
         category.setName(request.getParameter("name"));
         category.setDescription(request.getParameter("description"));
 
@@ -89,29 +94,37 @@ public class CategoryController extends HttpServlet {
         if ("updated".equals(result)) {
             response.sendRedirect("admin-category.jsp?msg=updated");
         } else {
-            request.setAttribute("errorCode", result);
-            request.getRequestDispatcher("admin-category-edit.jsp").forward(request, response);
+            String errorParam = "unknown";
+            if ("INVALID_NAME".equals(result)) {
+                errorParam = "invalid_name";
+            }
+            response.sendRedirect("admin-category.jsp?error=" + errorParam);
         }
     }
 
     private void deleteCategory(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        int id = Integer.parseInt(request.getParameter("category_id"));
+        // JSP gọi href=\"category?action=delete&id=...\"
+        int id = Integer.parseInt(request.getParameter("id"));
         String result = categoryBO.removeCategory(id);
 
         if ("deleted".equals(result)) {
             response.sendRedirect("admin-category.jsp?msg=deleted");
         } else {
-            request.setAttribute("errorCode", result);
-            request.getRequestDispatcher("admin-category.jsp").forward(request, response);
+            String errorParam = "unknown";
+            if ("IN_USE".equals(result)) {
+                errorParam = "in_use";
+            }
+            response.sendRedirect("admin-category.jsp?error=" + errorParam);
         }
     }
 
     private void showEditForm(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        int id = Integer.parseInt(request.getParameter("category_id"));
+        // JSP gọi href=\"category?action=edit&id=...\"
+        int id = Integer.parseInt(request.getParameter("id"));
         Category category = categoryBO.getCategoryById(id);
 
         request.setAttribute("category", category);

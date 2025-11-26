@@ -115,4 +115,18 @@ public class CategoryDAO {
 	    }
 	    return 0;
 	}
+
+	public int countAllCategories() {
+		String sql = "SELECT COUNT(*) FROM categories";
+		try (Connection conn = DBConnection.getConnection();
+		     PreparedStatement ps = conn.prepareStatement(sql);
+		     ResultSet rs = ps.executeQuery()) {
+			if (rs.next()) {
+				return rs.getInt(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
 }

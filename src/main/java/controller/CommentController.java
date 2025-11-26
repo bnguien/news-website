@@ -9,7 +9,7 @@ import java.util.List;
 import model.bean.Comment;
 import model.bo.CommentBO;
 
-@WebServlet("/comment")
+@WebServlet(urlPatterns = {"/comment", "/CommentController"})
 public class CommentController extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private CommentBO commentBO;

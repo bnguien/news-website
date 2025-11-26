@@ -18,7 +18,7 @@ public class LoginController extends HttpServlet {
 	public final UserBO userBO = new UserBO();
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-		response.sendRedirect("login.jsp");
+		request.getRequestDispatcher("login.jsp").forward(request, response);
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -39,7 +39,7 @@ public class LoginController extends HttpServlet {
 			request.setAttribute("errorCode", errorCode);
 			request.setAttribute("loginIdentifier", loginIdentifier);
 			
-			request.getRequestDispatcher("register.jsp").forward(request, response);
+			request.getRequestDispatcher("login.jsp").forward(request, response);
 			return;
 		}
 		
@@ -50,12 +50,13 @@ public class LoginController extends HttpServlet {
 				
 				User loggedUser = loggedUserOpt.get();
 	            HttpSession session = request.getSession();
-	            session.setAttribute("userId", loggedUser.getUserId());
+	            // Dùng key 'user_id' thống nhất với các JSP / controller khác
+	            session.setAttribute("user_id", loggedUser.getUserId());
 	            session.setAttribute("username", loggedUser.getUsername());
 	            session.setAttribute("email", loggedUser.getEmail());
 	            session.setAttribute("role", loggedUser.getRole());
 	            
-				response.sendRedirect("index.jsp?msg=login_success");
+				response.sendRedirect("welcome.jsp?msg=login_success");
 			} else {
 				errorCode = "ACCOUNT_NOT_EXISTS";
 				System.out.println(DEBUG_PREFIX + errorCode + ": Username or email was not registered.");
