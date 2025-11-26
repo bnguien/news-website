@@ -18,7 +18,7 @@ public class LogOutController extends HttpServlet {
 		if (session != null) {
             session.invalidate();
         }
-        response.sendRedirect("index.jsp");
+        response.sendRedirect("welcome.jsp");
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
