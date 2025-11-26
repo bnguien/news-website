@@ -12,6 +12,8 @@ import model.bean.Comment;
 import util.DBConnection;
 
 public class CommentDAO {
+
+    // Giữ method gốc để tương thích nếu nơi khác có dùng
 	public int insertComment(int articleId, int userId, String content, java.util.Date createdAt) {
 		String sql = "INSERT INTO comments (article_id, user_id, content) VALUES (?, ?, ?)";
 		try(Connection conn = DBConnection.getConnection();
@@ -29,6 +31,19 @@ public class CommentDAO {
 		}
 		return -1;
 	}
+
+    // API thân thiện hơn cho tầng BO
+    public int insertComment(Comment comment) {
+        if (comment == null) {
+            return -1;
+        }
+        return insertComment(
+                comment.getArticleId(),
+                comment.getUserId(),
+                comment.getContent(),
+                new java.util.Date()
+        );
+    }
 	
 	public boolean deleteComment(int commentId) {
 		String sql = "DELETE FROM comments WHERE comment_id = ?";
@@ -63,5 +78,19 @@ public class CommentDAO {
 			e.printStackTrace();
 		}
 		return comments;
+	}
+
+	public int countAllComments() {
+		String sql = "SELECT COUNT(*) FROM comments";
+		try (Connection conn = DBConnection.getConnection();
+		     PreparedStatement ps = conn.prepareStatement(sql);
+		     ResultSet rs = ps.executeQuery()) {
+			if (rs.next()) {
+				return rs.getInt(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
 	}
 }
