@@ -89,7 +89,7 @@ public class UserBO {
 	public Optional<User> loginByAnyIdentifier(String loginIdentifier, String password) {
 		if (Validators.isValidEmail(loginIdentifier)) {
 			return loginByEmail(loginIdentifier, password);
-		} else if (Validators.isValidUsername(password)) {
+		} else if (Validators.isValidUsername(loginIdentifier)) {
 			return loginByUsername(loginIdentifier, password);
 		}
 		return Optional.empty();
