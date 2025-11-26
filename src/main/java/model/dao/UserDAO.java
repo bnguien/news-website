@@ -6,8 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
 
+import config.DBConnection;
 import model.bean.User;
-import util.DBConnection;
 
 public class UserDAO {
 	Connection conn;
