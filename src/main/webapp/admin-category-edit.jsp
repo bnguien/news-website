@@ -1,5 +1,4 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -32,32 +31,35 @@
 </head>
 <body>
 
+<%
+    model.bean.Category category = (model.bean.Category) request.getAttribute("category");
+%>
+
 <div class="container">
     <h2>SỬA DANH MỤC</h2>
 
-    <c:if test="${empty category}">
+    <% if (category == null) { %>
         <p style="color:red; text-align:center;">Không tìm thấy danh mục!</p>
         <p style="text-align:center;"><a href="admin-category.jsp">← Quay lại</a></p>
-    </c:if>
+    <% } else { %>
 
-    <c:if test="${not empty category}">
         <form action="category" method="POST">
             <input type="hidden" name="action" value="update">
-            <input type="hidden" name="id" value="${category.categoryId}">
+            <input type="hidden" name="id" value="<%= category.getCategoryId() %>">
 
             <div>
                 <label>ID:</label>
-                <input type="text" value="${category.categoryId}" disabled style="background:#f0f0f0;">
+                <input type="text" value="<%= category.getCategoryId() %>" disabled style="background:#f0f0f0;">
             </div>
 
             <div>
                 <label>Tên Danh Mục *</label>
-                <input type="text" name="name" value="<c:out value='${category.name}'/>" required maxlength="100">
+                <input type="text" name="name" value="<%= category.getName() %>" required maxlength="100">
             </div>
 
             <div>
                 <label>Mô Tả</label>
-                <textarea name="description" rows="4" placeholder="Mô tả ngắn về danh mục (không bắt buộc)">${category.description}</textarea>
+                <textarea name="description" rows="4" placeholder="Mô tả ngắn về danh mục (không bắt buộc)"><%= category.getDescription() %></textarea>
             </div>
 
             <div class="btn-group">
@@ -65,7 +67,9 @@
                 <a href="admin-category.jsp" class="back">Hủy bỏ</a>
             </div>
         </form>
-    </c:if>
+
+    <% } %>
+
 </div>
 
 </body>
